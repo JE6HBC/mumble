@@ -1,0 +1,11 @@
+version: "2"
+services:
+  murmur:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    stdin_open: true
+    tty: true
+    ports:
+      - 64738:64738
+      # - 50051:50051 # grpc
