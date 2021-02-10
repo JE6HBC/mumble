@@ -3,11 +3,15 @@ FROM ubuntu:latest
 # needed to install tzdata in disco
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get update && apt-get install --no-install-recommends -y \
+RUN apt-get update && apt-get install -y \
 	build-essential \
-	cmake \
+        apt-utils \
+        cmake \
 	pkg-config \
 	qt5-default \
+	qttools5-dev \
+        qttools5-dev-tools \
+        libqt5svg5-dev \
 	libboost-dev \
 	libasound2-dev \
 	libssl-dev \
@@ -25,6 +29,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 	libgrpc++-dev \
 	libxi-dev \
 	libbz2-dev \
+	g++-multilib \
 	&& rm -rf /var/lib/apt/lists/*
 
 COPY . /root/mumble
@@ -37,7 +42,7 @@ RUN make -j $(nproc)
 FROM ubuntu:latest
 
 RUN adduser murmur
-RUN apt-get update && apt-get install --no-install-recommends -y \
+RUN apt-get update && apt-get install -y \
 	libcap2 \
 	libzeroc-ice3.7 \
 	'^libprotobuf[0-9]+$' \
@@ -61,5 +66,5 @@ RUN mkdir /var/lib/murmur && \
 
 EXPOSE 64738/tcp 64738/udp 50051
 USER murmur
-
+     
 CMD /usr/bin/murmurd -v -fg -ini /etc/murmur/murmur.ini
